@@ -22,6 +22,8 @@ import java.util.Optional;
  *
  * Y Hibernate genera la implementacion automaticamente.
  */
+
+
 public interface PedidoRepository {
 
     Pedido guardar(Pedido pedido);

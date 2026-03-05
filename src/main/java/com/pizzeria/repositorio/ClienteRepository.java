@@ -21,6 +21,7 @@ import java.util.Optional;
  * buscarTodos, buscarPorCliente y eliminar. Aqui necesitas los equivalentes
  * para Cliente.
  */
+
 public interface ClienteRepository {
 
     /** Guarda un cliente (nuevo o actualizado). */
@@ -31,6 +32,8 @@ public interface ClienteRepository {
 
     /** Devuelve todos los clientes registrados. */
     List<Cliente> buscarTodos();
+
+    List<Cliente> buscarPorRanking();
 
     /** Busca un cliente por nombre (case insensitive). */
     Optional<Cliente> buscarPorNombre(String nombre);

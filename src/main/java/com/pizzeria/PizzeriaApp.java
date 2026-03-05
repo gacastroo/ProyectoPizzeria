@@ -326,5 +326,11 @@ public class PizzeriaApp {
 
         System.out.println("\n--- EXPORTAR A JSON ---\n");
         System.out.println(pedidoService.exportarJSON());
+
+        // ==========================================================
+        // RANKING DE CLIENTES
+        // ==========================================================
+
+        System.out.println(clienteService.obtenerRankingClientes());
     }
 }

@@ -1,5 +1,4 @@
 package com.pizzeria.servicio;
-
 import com.pizzeria.excepcion.ClienteNoEncontradoException;
 import com.pizzeria.modelo.CategoriaCliente;
 import com.pizzeria.modelo.Cliente;
@@ -50,6 +49,7 @@ public class ClienteService {
         return clienteRepository.buscarPorId(id)
                 .orElseThrow(() -> new ClienteNoEncontradoException(id));
     }
+
 
     /**
      * Lista todos los clientes registrados.
@@ -109,6 +109,27 @@ public class ClienteService {
         }
         // 5. Guardar cambios
         clienteRepository.guardar(cliente);
+    }
+
+    public String obtenerRankingClientes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== RANKING DE CLIENTES ===\n");
+        clienteRepository.buscarTodos().stream()
+                .map(cliente -> {
+                    double gasto = pedidoRepository.buscarPorCliente(cliente.getId())
+                            .stream()
+                            .mapToDouble(Pedido::calcularTotal)
+                            .sum();
+                    return Map.entry(cliente, gasto);
+                })
+                .filter(entry -> entry.getValue() > 0)
+                .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
+                .forEach(entry -> sb.append(String.format(
+                        "  %s → %.2f€%n",
+                        entry.getKey().getNombre(), entry.getValue())));
+
+        sb.append("===========================\n");
+        return sb.toString();
     }
 
     /**

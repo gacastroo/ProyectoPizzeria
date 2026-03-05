@@ -1,11 +1,8 @@
 package com.pizzeria.repositorio;
 
 import com.pizzeria.modelo.Pedido;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +15,8 @@ import java.util.stream.Collectors;
  *
  * Pero entender COMO funciona por dentro es clave para depurar
  * problemas en Spring cuando las cosas no funcionan como esperamos.
+ *
+ *
  */
 public class PedidoRepositoryMemoria implements PedidoRepository {
 
@@ -40,6 +39,7 @@ public class PedidoRepositoryMemoria implements PedidoRepository {
     public List<Pedido> buscarTodos() {
         return new ArrayList<>(datos.values());
     }
+
 
     @Override
     public List<Pedido> buscarPorCliente(int idCliente) {

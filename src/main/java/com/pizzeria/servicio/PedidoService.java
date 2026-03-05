@@ -19,16 +19,14 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 /**
- * Servicio que contiene la LOGICA DE NEGOCIO de los pedidos.
- *
- * INYECCION DE DEPENDENCIAS POR CONSTRUCTOR:
+ * Servicio que contiene la LÓGICA DE NEGOCIO de los pedidos.
+ * INYECCIÓN DE DEPENDENCIAS POR CONSTRUCTOR:
  * Este servicio recibe su repositorio por constructor. NO lo crea el mismo.
  * Eso significa que:
- * 1. Podemos cambiar la implementacion del repositorio sin tocar el servicio
+ * 1. Podemos cambiar la implementación del repositorio sin tocar el servicio
  * 2. Podemos probar el servicio con un repositorio "falso" (mock) en tests
- * 3. El servicio NO sabe si los datos estan en memoria, en archivo, o en MySQL
- *
- * En Spring, esta inyeccion se hace automaticamente con @Autowired:
+ * 3. El servicio NO sabe si los datos están en memoria, en archivo, o en MySQL
+ * En Spring, esta inyección se hace automáticamente con @Autowired:
  *
  *   @Service
  *   public class PedidoService {
@@ -38,14 +36,15 @@ import java.util.OptionalDouble;
  *       public PedidoService(PedidoRepository repositorio) {
  *           this.repositorio = repositorio;
  *       }
- *   }
+ *     }
+ *   {}
  */
 public class PedidoService {
 
     private final PedidoRepository repositorio;
 
     /**
-     * Constructor con inyeccion de dependencias.
+     * Constructor con inyección de dependencias.
      * Recibe la dependencia (repositorio) en vez de crearla internamente.
      */
     public PedidoService(PedidoRepository repositorio) {
@@ -54,7 +53,7 @@ public class PedidoService {
 
     /**
      * Crea un nuevo pedido para un cliente y lo guarda en el repositorio.
-     * REFACTORING: antes recibia String nombreCliente, ahora recibe un objeto Cliente.
+     * REFACTORING: antes recibía String nombreCliente, ahora recibe un objeto Cliente.
      */
     public Pedido crearPedido(Cliente cliente) {
         Pedido pedido = new Pedido(cliente);
@@ -62,7 +61,7 @@ public class PedidoService {
     }
 
     /**
-     * Busca un pedido por numero.
+     * Busca un pedido por número.
      * Usa Optional.orElseThrow(): si el pedido no existe, lanza la excepcion.
      */
     public Pedido buscarPedido(int numero) {
@@ -101,14 +100,14 @@ public class PedidoService {
     }
 
     /**
-     * Confirma un pedido: valida que tenga items y los envia a cocina.
-     * Esta es LOGICA DE NEGOCIO: el modelo no sabe de "confirmar",
+     * Confirma un pedido: valida que tenga items y los envía a cocina.
+     * Esta es LÓGICA DE NEGOCIO: el modelo no sabe de "confirmar",
      * el repositorio no sabe de "cocina". Solo el servicio coordina todo.
      */
     public void confirmarPedido(int numeroPedido) {
         Pedido pedido = buscarPedido(numeroPedido);
 
-        // Regla de negocio: no se puede confirmar un pedido vacio
+        // Regla de negocio: no se puede confirmar un pedido vacío
         if (pedido.getCantidadItems() == 0) {
             throw new PedidoVacioException(numeroPedido);
         }
@@ -129,7 +128,7 @@ public class PedidoService {
      * REGLAS DE NEGOCIO:
      * - El pedido debe existir
      * - El porcentaje debe estar entre 1 y 50
-     * - El pedido no puede estar vacio
+     * - El pedido no puede estar vacío
      */
     public double aplicarDescuento(int numeroPedido, double porcentaje) {
         Pedido pedido = buscarPedido(numeroPedido);
@@ -139,7 +138,7 @@ public class PedidoService {
             throw new DescuentoInvalidoException(porcentaje);
         }
 
-        // Regla de negocio: no se descuenta un pedido vacio
+        // Regla de negocio: no se descuenta un pedido vacío
         if (pedido.getCantidadItems() == 0) {
             throw new PedidoVacioException(numeroPedido);
         }
@@ -158,7 +157,7 @@ public class PedidoService {
 
     /**
      * Genera un resumen de todas las ventas.
-     * Este tipo de metodo de "reporte" es muy comun en servicios reales.
+     * Este tipo de método de "reporte" es muy común en servicios reales.
      * En Spring, se expone con un endpoint como GET /api/pedidos/resumen.
      */
     public String generarResumen() {
@@ -196,8 +195,8 @@ public class PedidoService {
         );
     }
 
-    // clasificarCliente() se movio a ClienteService.actualizarCategoria()
-    // La logica de fidelidad pertenece al servicio de clientes, no al de pedidos.
+    // clasificarCliente() se movió a ClienteService.actualizarCategoria()
+    // La lógica de fidelidad pertenece al servicio de clientes, no al de pedidos.
 
     /**
      * Cancela un pedido (lo elimina del repositorio).
@@ -211,9 +210,8 @@ public class PedidoService {
     /**
      * Exporta todos los pedidos a formato JSON.
      * Usa Gson (dependencia Maven) + Streams.
-     *
      * En Spring: esto no se hace asi. Spring convierte a JSON
-     * automaticamente con Jackson cuando devolvemos un objeto
+     * automáticamente con Jackson cuando devolvemos un objeto
      * desde un @RestController. Pero la idea es la misma.
      */
     public String exportarJSON() {

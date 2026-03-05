@@ -41,6 +41,11 @@ public class ClienteRepositoryMemoria implements ClienteRepository {
         return new ArrayList<>(datos.values());
     }
 
+    @Override
+    public List<Cliente> buscarPorRanking() {
+        return List.of();
+    }
+
     // -------------------------------
     // Buscar por nombre (case insensitive)
     // -------------------------------
