@@ -149,17 +149,17 @@ public class ClienteService {
      * 4. Formatear con String.format()
      */
     public String generarInformeCliente(int idCliente) {
-        // 1. Buscar el cliente
-        Cliente cliente = buscarCliente(idCliente);
+            // 1. Buscar el cliente
+            Cliente cliente = buscarCliente(idCliente);
 
-        // 2. Buscar sus pedidos (tipado correcto)
-        List<Pedido> pedidosCliente = pedidoRepository.buscarPorCliente(idCliente);
+            // 2. Buscar sus pedidos (tipado correcto)
+            List<Pedido> pedidosCliente = pedidoRepository.buscarPorCliente(idCliente);
 
-        // 3. Contar pedidos y calcular gasto total
-        int cantidadPedidos = pedidosCliente.size();
-        double gastoTotal = pedidosCliente.stream()
-                .mapToDouble(Pedido::calcularTotal)
-                .sum();
+            // 3. Contar pedidos y calcular gasto total
+            int cantidadPedidos = pedidosCliente.size();
+            double gastoTotal = pedidosCliente.stream()
+                    .mapToDouble(Pedido::calcularTotal)
+                    .sum();
 
         // 4. Generar informe
         StringBuilder sb = new StringBuilder();
